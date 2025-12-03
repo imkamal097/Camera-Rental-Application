@@ -7,6 +7,7 @@ public class CameraMenu {
 public static void Menu(TreeMap<Integer,Camera> tm,float walletamt)
 {
 	boolean flag=true;
+	
 	while(flag)
     {
         System.out.println("+----------------------------------------+");
@@ -38,11 +39,18 @@ public static void Menu(TreeMap<Integer,Camera> tm,float walletamt)
         	walletamt=CameraOptions.My_Wallet(walletamt);
         	break;
         	
-        default:
+        case 5:
         	System.out.println("-------------------------------------------------");
             System.out.println("EXITED FROM THE APPLICATION. THANK YOU!");
             System.out.println("-------------------------------------------------");
             flag=false; 
+            break;
+        	
+        default:
+        	System.out.println("-------------------------------------------------");
+            System.out.println("EXITED FROM THE APPLICATION. THANK YOU!");
+            break;
+            
        } 
 
 }

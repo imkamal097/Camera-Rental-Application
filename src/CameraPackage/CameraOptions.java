@@ -1,5 +1,6 @@
 package CameraPackage;
 
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -9,8 +10,7 @@ public class CameraOptions {
 	 public static void View_All_Cameras(TreeMap<Integer, Camera> tm)
 	 {
 	     System.out.println("--------------------------------------------------------------------------------------");
-	     System.out.printf("| %-10s | %-15s | %-15s | %-20s | %-10s|\n",
-	             "CAMERA_ID", "CAMERA_BRAND", "CAMERA_MODEL", "CAMERA_PRICE(PER DAY)", "STATUS");
+	     System.out.printf("| %-10s | %-15s | %-15s | %-20s | %-10s|\n","CAMERA_ID", "CAMERA_BRAND", "CAMERA_MODEL", "CAMERA_PRICE(PER DAY)", "STATUS");
 	     System.out.println("--------------------------------------------------------------------------------------");
 	     for(Map.Entry<Integer, Camera> en : tm.entrySet()) {
 	         Camera cameraDetails = en.getValue();
@@ -20,9 +20,9 @@ public class CameraOptions {
 	     System.out.println("--------------------------------------------------------------------------------------");
 	 }
 	 static Scanner sc = new Scanner(System.in);
-	 public static void My_Camera(TreeMap<Integer, Camera> tm , float walletamt) {
+	 public static void My_Camera(TreeMap<Integer, Camera> tm , float walletamt){
 	         System.out.println("-------------------------------------------------");
-	         System.out.println("----> THIS IS MY CAMERA LIBRARY:");
+	         System.out.println("----> THIS IS MY CAMERA LIBRARY:<----------------");
 	         System.out.println("-------------------------------------------------");
 
 	         while (true){
@@ -35,19 +35,41 @@ public class CameraOptions {
 	             int options=sc.nextInt();
 	             System.out.println("-------------------------------------------------");
 	             if (options == 1) {
+	            	 int id = 0;
+	            	 try {
 	                 System.out.print("ENTER THE CAMERA ID: ");
-	                 int id = sc.nextInt();
-	                 System.out.print("ENTER THE CAMERA BRAND: ");
+	                  id = sc.nextInt();
+	            	 }
+	            	 catch(Exception e) {
+	            		 System.out.println("Enter the correct type of output "+e);
+	            		 break;
+	            	 }
+	            	 
+	                 if(!tm.containsKey(id)) {                                   //To stop overriding the values with same id
+	                 System.out.print("ENTER THE CAMERA BRAND: "); 
 	                 String brand = sc.next();
 	                 System.out.print("ENTER THE CAMERA MODEL: ");
 	                 String model = sc.next();
 	                 System.out.print("ENTER THE CAMERA PRICE(PER DAY): ");
 	                 float price = sc.nextFloat();
+	                 if(price >= 0) {
 	                 String status = "AVAILABLE";
 	                 tm.put(id, new Camera(id, brand, model, price, status));
 	                 System.out.println("-------------------------------------------------");
 	                 System.out.println("YOUR CAMERA HAS BEEN SUCCESSFULLY ADDED TO THE MENU");
 	                 System.out.println("-------------------------------------------------");
+	                 }
+	                 else {
+	    	             System.out.println("-------------------------------------------------");
+	                	 System.out.println("Please Enter the valid Price: ");
+	    	             System.out.println("-------------------------------------------------");
+	                 }
+	                 }
+	                 else {
+	                	 System.out.println("-------------------------------------------------");
+	                	 System.out.println("Camera ID already Exists! Please Enter new CameraID: ");
+	                	 System.out.println("-------------------------------------------------");
+	                 }
 	             } 
 	             else if (options == 2) {
 	                 System.out.print("ENTER THE CAMERA ID TO REMOVE: ");
@@ -71,7 +93,6 @@ public class CameraOptions {
 	            	  System.out.println("-------------------------------------------------");
 	                  System.out.println("------> GOING TO THE MENU PAGE.");
 	                  System.out.println("-------------------------------------------------");
-	                  CameraMenu.Menu(tm,walletamt);
 	                  break;
 	              }
 	             
@@ -85,12 +106,11 @@ public class CameraOptions {
 			 if(value.getStatus().equals("AVAILABLE")) {
 			 temp.put(key,value);
 			 }
-			 
 		 }
 		 System.out.println("-------------------------------------------------");
 	     System.out.println("FOLLOWING IS THE LIST OF AVAILABLE CAMERA(S)");
 	     System.out.println("-------------------------------------------------");
-	     View_All_Cameras(temp);
+	     View_All_Cameras(temp);  
 	     System.out.println("-------------------------------------------------");
 	     System.out.println("Enter the Camera ID you want to rent: ");
 	     int id=sc.nextInt();
@@ -128,12 +148,18 @@ public class CameraOptions {
 
 	     if (choice == 1) {
 	         System.out.print("ENTER THE AMOUNT TO DEPOSIT: INR. ");
+	         
 	         float depositAmount = sc.nextFloat();
+	         if(depositAmount >= 0) {
 	         walletamt += depositAmount;
 	         System.out.println("-------------------------------------------------");
 	         System.out.println("WALLET UPDATED SUCCESSFULLY!");
 	         System.out.println("YOUR CURRENT WALLET BALANCE: INR. " + walletamt);
 	         System.out.println("-------------------------------------------------");
+	         }
+	         else {
+	        	 System.out.println("Please Enter the Amount in Positive number");
+	         }
 	     } else if (choice == 2) {
 	         System.out.println("-------------------------------------------------");
 	         System.out.println("WALLET BALANCE NOT UPDATED");
